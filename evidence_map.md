@@ -1,0 +1,27 @@
+# Evidence Map
+
+This file maps each public-facing claim to the evidence discovered in the current Codex thread review. It intentionally avoids full local paths, private Notion database URLs, email addresses, and unpublished manuscript details.
+
+| Claim | Status | Source thread | Artifact basename | Metric or evidence | Privacy note |
+| --- | --- | --- | --- | --- | --- |
+| Codex GitHub App connection was established before publishing | Verified | Current setup check | GitHub connector response | Initial check had no installed accounts; later check returned `yundongbanxia` with admin/push access to this repository | Do not expose tokens or browser login state |
+| Three-dimensional microchannel cooling work was reframed from q/m matrix to Rth scaling and Rth-DeltaP trajectory | Verified | 重构 operating-boundary 叙事 | `scaling_and_compactness_reframe_20260610` | Produced `scaling_collapse_summary.csv`, `q_limit_envelope.csv`, `Rth_DeltaP_trajectory.csv`, report and data hygiene audit | No full local path; no unpublished geometry detail |
+| E54 recommendation was reframed as engineering compromise, not simple normalized score | Verified | 重构 operating-boundary 叙事 | `scaling_and_compactness_reframe_20260610` | Report states compactness constraint + flow-quality/backflow caveat + Rth-DeltaP trajectory; normalized score downgraded to SI/internal screening | Public wording keeps structure high level |
+| Step 5b paper-ready figure package exists with QA status | Verified | 重构 operating-boundary 叙事 | `step5b_figure_fix_paper_polish_20260612` | 10 figure stems; 7 paper-ready; 3 diagnostic-only; non-deferred figures have PNG/PDF/SVG; PNG 600 dpi | No absolute path or sensitive file contents |
+| Variable-property validation changed the interpretation of q-limit | Verified | 重构 operating-boundary 叙事 | `step4_mechanism_and_vp_plan_20260611` | VP q3_m2 Tmax exceeded 370 K; constant-property q-limit treated as scaling, not final physical boundary | Quantitative claim retained because it was in thread summary |
+| Fluent/T8 launch and journal execution were restored and verified | Verified | 排查 T8 启动失败 | `runs-turndown-m0p5_E50E52_20260611` | E50 and E52 completed; `3ddp -g -t8`; `iter050` to `iter300` KPI chunks generated; status success | No full path, no license details beyond generic note |
+| Debug runner avoids false success when Fluent exits without journal work | Verified | 排查 T8 启动失败 | runner/debug workflow | T1 fallback uses headless `-g -t1`; success requires `iter050_*` output | Public wording avoids machine-specific service names |
+| Connected-width flow split audit v2 handled center scale and withheld unvalidated allocation | Verified | 审计 Fluent 连通宽度后处理 | `connected_width_flow_split_audit_v2_20260605_104440` | 24/24 cases included; 8 raw centers around 49.8 mapped by automatic scale scoring; 96 radial-band rows; band_failed 0; pilot_pass false; split not interpreted | Shows methodological rigor rather than private data |
+| Round7 manuscript and figure QA were performed with source-grounded figures | Verified | Round7 figure margin fix and expanded manuscript | `round7_delivery_Jun04_figure_margin_fix` | Fig.7 fixed; Fig.12 redrawn from original data; main text 5574 words excluding References; PDF 26 pages; Fig.10 and Fig.12 caption same-page fixes | Manuscript title/details omitted |
+| AI HOT daily automation writes to Notion with dedup and readback validation | Verified | AI HOT 日报写入 Notion | `ai-hot-notion-2` automation | 2026-06-12 daily had 27 items; created and verified Notion page; checked title/date/keywords/status/action type/original link/suggestions | Email, database URL, page ID omitted |
+| Resume workflow was audited and repaired from source chain | Verified | 简历制作&Install RenderCV skill | `output_visual_v6_repaired` and `output_visual_v6_final` | Found V6 content loss caused by script truncation; restored internships, FEniCS, two-page editable text; generated direction-specific versions | Resume personal contact details omitted |
+| Static homepage was checked in a real browser with Playwright | Verified | Current implementation | `index.html`, `qa_report.md` | Desktop 1366 x 900 and mobile 390 x 844: no horizontal overflow; 6 case cards; 4 metric blocks; Evidence Map link visible | Screenshots were inspected in-session; no private browser state used |
+| Chrome plugin job-search workflow | Pending evidence | Thread search did not find a matching readable thread | N/A | User mentioned this workflow, but current evidence pass did not find a thread/artifact | Keep out of main case cards until evidence is found |
+| Computer Use plugin workflow | Pending evidence | Thread search did not find a matching readable thread | N/A | User mentioned this workflow; plugin skill exists, but no task evidence was mapped in this pass | Keep out of main case cards until evidence is found |
+| 2D topology optimization with WSL/FEniCS | Pending evidence | Thread search did not find a matching readable thread | N/A | Approved command history shows WSL/FEniCS/topopt-related commands, but no reviewed thread summary was found in this pass | Can be added after local artifacts or thread are provided |
+
+## Public Claim Rules
+
+- Use only `Verified` rows in the main README and homepage case studies.
+- Use `Pending evidence` rows only in a short "to be added after evidence" note.
+- Avoid publishing exact local paths, private account names, Notion database URLs, and unreleased manuscript-specific details.

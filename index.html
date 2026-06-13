@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Codex Engineering Research Workflow</title>
+  <style>
+    :root {
+      --paper: #f8f5ef;
+      --surface: #ffffff;
+      --ink: #17202a;
+      --muted: #5c6670;
+      --line: #d8d2c8;
+      --teal: #007f7a;
+      --green: #2f6f4e;
+      --amber: #b8651b;
+      --rose: #8f2d56;
+      --blue: #2d5f8b;
+      --shadow: 0 18px 48px rgba(23, 32, 42, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Inter", "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+      line-height: 1.65;
+      letter-spacing: 0;
+    }
+
+    a {
+      color: inherit;
+      text-decoration-color: rgba(0, 127, 122, 0.42);
+      text-underline-offset: 4px;
+    }
+
+    .wrap {
+      width: min(1120px, calc(100% - 36px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      min-height: 78vh;
+      display: grid;
+      align-items: center;
+      padding: 56px 0 34px;
+      background:
+        linear-gradient(90deg, rgba(0, 127, 122, 0.08) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(47, 111, 78, 0.08) 1px, transparent 1px);
+      background-size: 42px 42px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+      gap: 38px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      color: var(--teal);
+      font-size: 14px;
+      font-weight: 700;
+      margin: 0 0 12px;
+    }
+
+    h1 {
+      font-size: clamp(40px, 7vw, 78px);
+      line-height: 0.98;
+      margin: 0 0 18px;
+      max-width: 900px;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      color: var(--muted);
+      font-size: 19px;
+      max-width: 720px;
+      margin: 0 0 26px;
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 10px 16px;
+      border: 1px solid var(--ink);
+      border-radius: 8px;
+      background: var(--ink);
+      color: #fff;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .button.secondary {
+      background: var(--surface);
+      color: var(--ink);
+      border-color: var(--line);
+    }
+
+    .visual {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 24px;
+    }
+
+    .visual-title {
+      margin: 0 0 16px;
+      font-size: 16px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .pipeline {
+      display: grid;
+      gap: 12px;
+    }
+
+    .node {
+      display: grid;
+      grid-template-columns: 10px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--teal);
+    }
+
+    .node:nth-child(2) .dot { background: var(--amber); }
+    .node:nth-child(3) .dot { background: var(--green); }
+    .node:nth-child(4) .dot { background: var(--rose); }
+    .node:nth-child(5) .dot { background: var(--blue); }
+
+    .node strong {
+      font-size: 15px;
+    }
+
+    .node span:last-child {
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    section {
+      padding: 68px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    h2 {
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.1;
+      margin: 0 0 18px;
+      letter-spacing: 0;
+    }
+
+    .section-copy {
+      max-width: 780px;
+      color: var(--muted);
+      font-size: 18px;
+      margin: 0 0 28px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .case-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .panel,
+    .case {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 22px;
+    }
+
+    .panel h3,
+    .case h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      line-height: 1.25;
+    }
+
+    .panel p,
+    .case p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .case ul,
+    .resume-list {
+      margin: 12px 0 0;
+      padding-left: 20px;
+      color: var(--muted);
+    }
+
+    .case li,
+    .resume-list li {
+      margin: 8px 0;
+    }
+
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .metric {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 28px;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .stack-table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .stack-table th,
+    .stack-table td {
+      text-align: left;
+      vertical-align: top;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .stack-table th {
+      background: #eee9df;
+      font-size: 14px;
+    }
+
+    .stack-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .note {
+      border-left: 4px solid var(--teal);
+      padding: 14px 18px;
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--muted);
+      margin-top: 24px;
+    }
+
+    footer {
+      padding: 34px 0 46px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 860px) {
+      .hero {
+        min-height: auto;
+      }
+
+      .hero-grid,
+      .case-grid,
+      .grid,
+      .metric-row {
+        grid-template-columns: 1fr;
+      }
+
+      .node {
+        grid-template-columns: 10px 1fr;
+      }
+
+      .node span:last-child {
+        grid-column: 2;
+        white-space: normal;
+      }
+
+      .stack-table,
+      .stack-table tbody,
+      .stack-table tr,
+      .stack-table th,
+      .stack-table td {
+        display: block;
+      }
+
+      .stack-table thead {
+        display: none;
+      }
+
+      .stack-table td {
+        border-bottom: 0;
+      }
+
+      .stack-table tr {
+        border-bottom: 1px solid var(--line);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">AI-Augmented Engineering Research Workflow</p>
+        <h1>把 Codex 变成科研、仿真、论文和求职的工程协作者</h1>
+        <p class="lead">工程热物理 / CFD 研究生的半公开作品集：从三维微通道液冷仿真、Fluent 故障恢复、论文图 QA，到 Notion 知识流和简历工程化。</p>
+        <div class="links">
+          <a class="button" href="https://github.com/yundongbanxia/codex-engineering-workflow">GitHub Repo</a>
+          <a class="button secondary" href="./README.md">README</a>
+          <a class="button secondary" href="./evidence_map.md">Evidence Map</a>
+        </div>
+      </div>
+      <aside class="visual" aria-label="workflow visual">
+        <p class="visual-title">Workflow Signal</p>
+        <div class="pipeline">
+          <div class="node"><span class="dot"></span><strong>Define</strong><span>问题与边界</span></div>
+          <div class="node"><span class="dot"></span><strong>Run</strong><span>Fluent / Python</span></div>
+          <div class="node"><span class="dot"></span><strong>Audit</strong><span>CSV / HDF5 / logs</span></div>
+          <div class="node"><span class="dot"></span><strong>Figure</strong><span>paper-ready QA</span></div>
+          <div class="node"><span class="dot"></span><strong>Ship</strong><span>README / Notion / resume</span></div>
+        </div>
+      </aside>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <div class="wrap">
+        <h2>工作流总览</h2>
+        <p class="section-copy">我把 Codex 放在一个有边界的工程流程里：先审计，再执行；先保留证据，再写结论；先区分真实点、缺失点和诊断点，再进入论文叙事。</p>
+        <div class="grid">
+          <article class="panel">
+            <h3>仿真编排</h3>
+            <p>用 Python、PyFluent、Fluent journal 和日志状态追踪承接批处理、重启、continuation 与失败诊断。</p>
+          </article>
+          <article class="panel">
+            <h3>数据审计</h3>
+            <p>围绕 HDF5、CSV、status、manifest 和 report 建立可追溯链路，避免把估算点画成真实仿真点。</p>
+          </article>
+          <article class="panel">
+            <h3>图文交付</h3>
+            <p>用脚本化图件、PDF 渲染、页面检查、DOCX 属性和审稿风险措辞检查把结果做成可交付材料。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <h2>已验证案例</h2>
+        <p class="section-copy">以下案例只使用当前证据表中已确认的线程和产物，不把未找到证据的经历包装成主成果。</p>
+        <div class="case-grid">
+          <article class="case">
+            <h3>三维微通道液冷与歧管优化</h3>
+            <p>围绕 connected annular-manifold radial microchannels，将推荐逻辑从单一 score 改写为 compactness、flow quality、Rth-DeltaP trajectory 和物性敏感性约束。</p>
+            <ul>
+              <li>形成 `Rth scaling / q-limit envelope / Rth-DeltaP trajectory` 证据链。</li>
+              <li>Step 5b 图件包包含 10 个 figure stems，其中 7 个 paper-ready。</li>
+              <li>明确 constant-property scaling 与 variable-property validation 的边界。</li>
+            </ul>
+          </article>
+          <article class="case">
+            <h3>Fluent/T8 故障恢复</h3>
+            <p>从进程、license、参数解析、journal 和 KPI 文件落盘逐层定位，恢复 headless Fluent 批处理链路。</p>
+            <ul>
+              <li>确认 `3ddp -g -t8` 能正常读 case/data、初始化、迭代并导出 chunk KPI。</li>
+              <li>修复 T1 fallback 的假成功风险。</li>
+              <li>用 E50/E52 两个设计点做实际验收。</li>
+            </ul>
+          </article>
+          <article class="case">
+            <h3>论文图件与 Round7 文档 QA</h3>
+            <p>以原始数据重绘机制图，修复图框、标签、caption 同页和 PDF 渲染问题，保证论文图不只是“看起来像”。</p>
+            <ul>
+              <li>Fig.7 标签和边界修复，Fig.12 从原始数据生成。</li>
+              <li>主文不含 References 5574 词，过强措辞检查通过。</li>
+              <li>最终 PDF 26 页，图页 blank-like 被人工确认是假阳性。</li>
+            </ul>
+          </article>
+          <article class="case">
+            <h3>AI HOT 到 Notion 自动化</h3>
+            <p>把 AI 行业日报转成面向工程热物理、CFD、热管理、科研工作流和求职的结构化行动清单。</p>
+            <ul>
+              <li>抓取、渲染、去重、写入、回读验证全流程。</li>
+              <li>2026-06-12 日报 27 条被结构化处理。</li>
+              <li>写入后验证标题、日期、关键词、状态、行动类型和建议区块。</li>
+            </ul>
+          </article>
+          <article class="case">
+            <h3>简历工程化与多方向投递</h3>
+            <p>把简历当作文档工程管理：源数据、脚本、DOCX、PDF、视觉预览和 audit 都有证据链。</p>
+            <ul>
+              <li>定位 V6 内容变短来自脚本截断，而不是源文件缺失。</li>
+              <li>修复实习经历、FEniCS、两端对齐和可选中文本。</li>
+              <li>产出通用 CFD、热管理、新能源、半导体设备方向版本。</li>
+            </ul>
+          </article>
+          <article class="case">
+            <h3>待补证据经历</h3>
+            <p>Chrome 插件求职、Computer Use 插件、二维拓扑优化与 WSL/FEniCS 长运行经历暂不进入主卡片。</p>
+            <ul>
+              <li>当前线程索引未找到可读证据。</li>
+              <li>后续可用本地 artifact、线程标题或截图补证。</li>
+              <li>补证后再加入 README 和主页。</li>
+            </ul>
+          </article>
+        </div>
+        <div class="metric-row">
+          <div class="metric"><strong>10</strong><span>Step 5b figure stems</span></div>
+          <div class="metric"><strong>7</strong><span>paper-ready figures</span></div>
+          <div class="metric"><strong>5574</strong><span>Round7 words excluding references</span></div>
+          <div class="metric"><strong>27</strong><span>AI HOT items processed on 2026-06-12</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <h2>Skill 与插件栈</h2>
+        <p class="section-copy">这里只列证据版用法。工具名不是亮点，真正的亮点是它们被纳入了可审计流程。</p>
+        <table class="stack-table">
+          <thead>
+            <tr>
+              <th>类别</th>
+              <th>证据版用法</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Planning</td><td>Superpowers、Plan Mode、执行清单、完成前验证。</td></tr>
+            <tr><td>Simulation</td><td>Python、PyFluent、Fluent journal、HDF5/CSV/status/log 审计。</td></tr>
+            <tr><td>Figures</td><td>nature-figure、论文级图件 QA、PNG/PDF/SVG 导出、600 dpi 检查。</td></tr>
+            <tr><td>Documents</td><td>DOCX/PDF 渲染、页面 contact sheet、作者属性、caption 同页检查。</td></tr>
+            <tr><td>Knowledge</td><td>aihot、Notion connector、日报抓取、去重、写入和回读验证。</td></tr>
+            <tr><td>Resume</td><td>RenderCV skill、python-docx、YAML 源、PDF/DOCX 多版本输出。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <h2>可放进简历的表达</h2>
+        <ul class="resume-list">
+          <li>构建 Codex + Python + PyFluent 科研仿真辅助流程，实现多工况 case/data 审计、KPI 汇总、图件生成、报告归档和失败诊断闭环。</li>
+          <li>面向三维微通道液冷研究，重构 operating-boundary 证据链，将推荐逻辑从 normalized score 转为 compactness、flow-quality、Rth-DeltaP trajectory 与物性敏感性约束。</li>
+          <li>搭建 AI HOT 到 Notion 的个人知识管理自动化，每日完成 AI 资讯抓取、去重、结构化写入和行动建议生成。</li>
+          <li>将简历制作流程工程化，基于 YAML/脚本/DOCX/PDF/audit 管理版本差异、ATS 友好性、文本可选中和多方向投递版本。</li>
+        </ul>
+        <p class="note">隐私边界：本页保留方法、指标和产物 basename；隐藏邮箱、私有 Notion 链接、完整本机路径、账号信息和未公开论文细节。</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      Published package target: github.com/yundongbanxia/codex-engineering-workflow.
+    </div>
+  </footer>
+</body>
+</html>

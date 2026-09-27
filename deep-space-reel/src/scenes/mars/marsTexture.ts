@@ -135,7 +135,7 @@ export const getMarsTextures = () => {
       // domain-warped continents for the big albedo patterns
       const wx = fbm(x * 1.3 + 11, y * 1.3, z * 1.3, 3);
       const wy = fbm(x * 1.3, y * 1.3 + 23, z * 1.3, 3);
-      albedo[idx] = fbm(x * 1.1 + wx * 1.2, y * 1.6 + wy * 1.2, z * 1.1, 5);
+      albedo[idx] = fbm(x * 1.5 + wx * 1.1, y * 1.9 + wy * 1.1, z * 1.5, 6);
       height[idx] = fbm(x * 3.2 + 5, y * 3.2, z * 3.2, 6);
     }
   }
@@ -201,11 +201,11 @@ export const getMarsTextures = () => {
       const idx = j * W + i;
       const h = height[idx];
 
-      const dark = smoothstep(0.04, 0.16, albedo[idx]);
+      const dark = smoothstep(0.0, 0.22, albedo[idx]);
       const tone = 0.86 + h * 0.5 + craterShade[idx] * 1.6;
-      let r = lerp(DUST[0], BASALT[0], dark * 0.85) * tone;
-      let g = lerp(DUST[1], BASALT[1], dark * 0.85) * tone;
-      let b = lerp(DUST[2], BASALT[2], dark * 0.85) * tone;
+      let r = lerp(DUST[0], BASALT[0], dark * 0.62) * tone;
+      let g = lerp(DUST[1], BASALT[1], dark * 0.62) * tone;
+      let b = lerp(DUST[2], BASALT[2], dark * 0.62) * tone;
 
       // polar caps, ragged edge
       const edge = albedo[idx] * 6;

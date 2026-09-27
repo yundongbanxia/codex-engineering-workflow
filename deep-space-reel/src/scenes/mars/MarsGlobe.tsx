@@ -78,7 +78,7 @@ const rimFragment = /* glsl */ `
   }
 `;
 
-export const LIGHT_POS: [number, number, number] = [-2, 1.2, 3.5];
+export const LIGHT_POS: [number, number, number] = [-3.4, 1.4, 1.9];
 
 export const MarsGlobe: React.FC<{
   z: number;
@@ -101,7 +101,7 @@ export const MarsGlobe: React.FC<{
 
   return (
     <>
-      <ambientLight intensity={0.12} />
+      <ambientLight intensity={0.035} />
       <directionalLight position={LIGHT_POS} intensity={3} />
       <group position={[0, 0, z]} rotation={[tilt, 0, 0]}>
         <group rotation={[0, spin, 0]}>

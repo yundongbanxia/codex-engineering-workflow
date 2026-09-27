@@ -1,6 +1,11 @@
 #!/usr/bin/env node
 /**
- * Builds public/fonts/noto-serif-sc-{300,500}.woff2 — Noto Serif SC subset
+ * Self-hosts every font the reel uses, so renders never touch the network:
+ *
+ *   public/fonts/ibm-plex-mono-{200,300,400}.woff2  — Google Fonts "latin" subset
+ *   public/fonts/noto-serif-sc-{300,400}.woff2      — see below
+ *
+ * Builds public/fonts/noto-serif-sc-{300,400}.woff2 — Noto Serif SC subset
  * to exactly the non-ASCII characters used anywhere in src/.
  *
  * Google Fonts' css2 API returns a subset font when given `text=`. Re-run
@@ -53,6 +58,21 @@ for (const w of WEIGHTS) {
   if (!res.ok) throw new Error(`Font download failed (${res.status}) for weight ${w}`);
   const buf = Buffer.from(await res.arrayBuffer());
   const out = join(root, "public", "fonts", `noto-serif-sc-${w}.woff2`);
+  writeFileSync(out, buf);
+  console.log(`wrote ${out} (${(buf.length / 1024).toFixed(1)} KB)`);
+}
+
+// IBM Plex Mono: the css2 response lists one @font-face per unicode subset,
+// each preceded by a /* subset */ comment. Keep only "latin".
+for (const w of ["200", "300", "400"]) {
+  const cssUrl = `https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@${w}`;
+  const css = await (await fetch(cssUrl, { headers: { "User-Agent": UA } })).text();
+  const latin = css.match(/\/\* latin \*\/[^}]*url\((https:[^)]+)\)/);
+  if (!latin) throw new Error(`No latin subset for IBM Plex Mono ${w}:\n${css}`);
+  const res = await fetch(latin[1], { headers: { "User-Agent": UA } });
+  if (!res.ok) throw new Error(`Font download failed (${res.status}) for Plex ${w}`);
+  const buf = Buffer.from(await res.arrayBuffer());
+  const out = join(root, "public", "fonts", `ibm-plex-mono-${w}.woff2`);
   writeFileSync(out, buf);
   console.log(`wrote ${out} (${(buf.length / 1024).toFixed(1)} KB)`);
 }

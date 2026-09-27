@@ -36,31 +36,21 @@ npx remotion render DeepSpaceReel out/deep-space-reel.mp4
 npm run render
 ```
 
-- 首次渲染会自动下载 Chrome Headless Shell（来自 `remotion.media`）。
+- 首次渲染会自动下载 Chrome Headless Shell（来自 `remotion.media`，需要网络放行该域名）。
 - 火星场景是 WebGL，`remotion.config.ts` 默认使用 `swangle`（无 GPU 也能渲染）。本机有 GPU 时可加 `--gl=angle` 提速。
 - 只渲染几帧检查：`npx remotion render DeepSpaceReel out/frames --frames=0,300,600,800 --image-format=png`
 
-### 渲染状态
-
-在本次制作所用的云端容器里，渲染**未能执行**：Chrome Headless Shell 下载被网络出口策略拦截。按要求没有绕过（没有改用其他浏览器）。报错原文：
-
-```
-Downloading Chrome Headless Shell https://www.remotion.dev/chrome-headless-shell
-Downloading from: https://remotion.media/chromium-headless-shell-linux-x64-149.0.7790.0.zip?clear
-Error: Received a status code of 403 while downloading file https://remotion.media/chromium-headless-shell-linux-x64-149.0.7790.0.zip?clear.
-The response body was:
----
-Host not in allowlist: remotion.media. Add this host to your network egress settings to allow access.
----
-```
-
-在允许访问 `remotion.media` 的环境（或本地）执行上面的渲染命令即可得到 `out/deep-space-reel.mp4`。
+成片：[`out/deep-space-reel.mp4`](./out/deep-space-reel.mp4)（H.264 · 1920×1080 · 30fps · 900 帧 · 30.0 秒 · 约 12 MB）。在云端容器（无 GPU，SwiftShader）里完整渲染约 5.5 分钟。
 
 ## 字体
 
-- IBM Plex Mono：`@remotion/google-fonts` 在渲染时加载。
-- Noto Serif SC：`public/fonts/` 下的**子集** woff2，只包含 `src/` 中出现过的字符（约 200 个字形，每个字重 ~33KB）。
-  改动中文文案后运行 `npm run fonts` 重新生成（代理环境：`NODE_USE_ENV_PROXY=1 npm run fonts`）。
+所有字体都放在 `public/fonts/`，渲染时不访问网络（也避免了无头 Chrome 不信任代理证书导致 Google Fonts 加载失败的问题）。由 `npm run fonts`（`scripts/fetch-fonts.mjs`）从 Google Fonts 生成：
+
+- IBM Plex Mono 200 / 300 / 400：latin 子集，每个 ~15KB。
+- Noto Serif SC 300 / 400：**子集**，只包含 `src/` 中出现过的字符（约 220 个字形，每个 ~35KB）。
+  改动中文文案后必须重新运行 `npm run fonts`（代理环境：`NODE_USE_ENV_PROXY=1 npm run fonts`）。
+
+两款字体均为 SIL Open Font License 1.1。
 
 ## 项目结构
 
@@ -114,5 +104,5 @@ scripts/fetch-fonts.mjs 生成 Noto Serif SC 子集
 
 ## 技术栈
 
-`remotion` 4.0.529 · `@remotion/three` + `three` + `@react-three/fiber`（火星）· `@remotion/transitions`（溶解转场）· `@remotion/paths`（轨道绘制）· `@remotion/google-fonts` + `@remotion/fonts`（字体）。
+`remotion` 4.0.529 · `@remotion/three` + `three` + `@react-three/fiber`（火星）· `@remotion/transitions`（溶解转场）· `@remotion/paths`（轨道绘制）· `@remotion/fonts`（本地字体加载）。
 Remotion 官方 Agent Skills 安装在 `.claude/skills/`（`npx skills add remotion-dev/skills`）。

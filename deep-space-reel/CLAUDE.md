@@ -41,7 +41,7 @@
 - 字距加大后要用 `marginRight: -<字距>` 抵消尾部空白，保证居中。
 - Noto Serif SC 是**本地子集**（`public/fonts/`），只包含 `src/` 里出现过的字符。
   **改动任何中文文案后必须运行 `npm run fonts`**（代理环境下：`NODE_USE_ENV_PROXY=1 npm run fonts`），否则新字会缺字。
-- IBM Plex Mono 通过 `@remotion/google-fonts` 加载（latin 子集，200/300/400）。
+- IBM Plex Mono 同样本地化（latin 子集，200/300/400）。**渲染时不得访问任何字体 CDN**：无头 Chrome 不一定信任代理证书，且离线可复现。
 - 等宽字体栈的回退是 Noto 子集——但不要依赖它，**中文不要写进 mono 样式**。
 
 ## 4. 时间曲线（`EASE`）
